@@ -38,7 +38,24 @@ Le plan de livraison de l'équipe compte 5 étapes (vue d'ensemble, fiche Silver
 - **Fichiers prévus** : page d'accueil du front, composant carte de parcours, données figées (seed), `.env.example`, `DEPLOIEMENT.md` (~5 fichiers)
 - **Tests unitaires prévus** : 1 à 2, sur le calcul/formatage des effectifs par parcours (pas sur le balisage)
 - **Étapes ajoutées à la démo** : ouvrir l'URL publique, constater les 6 parcours affichés
-- **Bilan** : _à remplir en fin d'itération (durée de codage réelle, dépassement éventuel, fait, reporté, modifications fichier par fichier)_
+- **Bilan** :
+  - Durée de codage réelle : 6 minutes, pas de dépassement.
+  - Critères d'acceptation : les deux premiers satisfaits tels quels. Le troisième (sélecteur de rôle) satisfait avec une correction de portée : vérifié par rendu/inspection du DOM, pas par clic interactif (pas de navigateur disponible dans cette session de vérification) — le composant est un `<select>` contrôlé standard, sans ambiguïté sur son fonctionnement.
+  - Écart avec le libellé prévu : le premier critère prévoyait des « effectifs » par parcours ; le prototype retenu affiche en réalité un seuil de points RFM (ou « Don mensuel » pour Fidèles) et un badge de cycle, pas un nombre de donateurs. L'écran construit reproduit fidèlement le prototype, qui fait foi.
+  - Valeur ajoutée hors critères initiaux : l'écran met en avant l'affectation automatique d'un nouveau donateur (exemple en dur) à son parcours, via une règle testée (`assignerParcours`) — reprend la « valeur mesurée » de l'étape 1 du plan de livraison de l'équipe, sans itération dédiée.
+  - Harnais : contrat de déployabilité sans borne (`verifier-deployabilite.sh`), `npm test` passant (5 tests), revue du sous-agent `reviewer` intégrée (2 corrections : libellé Parcours 4 trompeur, `lang="en"` → `"fr"`). Aucun blocage sur le signal PM Lab.
+  - Déploiement : plateforme démarrée en deux temps (premier `gitlab-ci-local` interrompu par une limite de débit Docker Hub sur `temporalio/ui`, qui a empêché postgres/registre/S3/Temporal/Casdoor/Umami de démarrer malgré un statut "PASS" sur `compose-up` ; relance réussie). Images construites, publiées, déployées. `localhost:8080/health`, `/sante` et `localhost:8081/health`, `/sante` répondent 200 depuis la VM.
+  - Signalé à PM Lab : version 1, `moteur_avance: false` (enregistrée quand même).
+  - Reporté : rien de prévu n'a été abandonné.
+  - **Modifications** (fichier par fichier) :
+    - `frontend/src/lib/parcours.ts`, `parcours.test.ts` (nouveaux) : données des 6 parcours + règle d'affectation automatique, testée — sert les critères 1 et 3.
+    - `frontend/src/components/RoleSwitcher.tsx`, `.module.css` (nouveaux) : sélecteur de rôle léger — sert le critère 3.
+    - `frontend/src/app/page.tsx`, `page.module.css` (réécrits) : écran « CRM · Cycles & scoring » — sert le critère 1.
+    - `frontend/src/app/layout.tsx`, `globals.css` (modifiés) : titre/metadata, palette i4m, `lang="fr"`.
+    - `frontend/nginx.conf` (modifié) : en-têtes de sécurité et CSP corrigée (`connect-src 'self'`) — contrat de déployabilité.
+    - `api/Dockerfile`, `frontend/Dockerfile` (modifiés) : images qualifiées `docker.io/library/...` — déploiement.
+    - `.env.example`, `DEPLOIEMENT.md`, `podman-compose.yml` (nouveaux) : contrat de déployabilité et recette du serveur — sert le critère 2.
+    - `e2e/demo.spec.ts` (modifié) : étape de démo sur les 6 parcours et l'affectation automatique.
 
 ## Itération 2 : La fiche donateur Silver montre qu'aucun appel à don n'est prévu avant J+60
 
