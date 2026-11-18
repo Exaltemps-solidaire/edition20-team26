@@ -19,4 +19,11 @@ test("Démo : le cas passant", async ({ page }) => {
     await expect(page.getByText("0 appel à don avant J+60")).toBeVisible();
     await expect(page.getByText("Appel à don · J+61")).toBeVisible();
   });
+
+  await test.step("Je reviens, puis j'ouvre la fiche Fidèles : bascule automatique depuis Silver", async () => {
+    await page.getByText("← Retour aux parcours").click();
+    await page.getByText("Parcours 4 · Fidèles").click();
+    await expect(page.getByText("Thomas Girard")).toBeVisible();
+    await expect(page.getByText("0 intervention de la responsable collecte.")).toBeVisible();
+  });
 });

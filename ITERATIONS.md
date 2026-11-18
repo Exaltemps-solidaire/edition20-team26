@@ -88,6 +88,8 @@ Le plan de livraison de l'équipe compte 5 étapes (vue d'ensemble, fiche Silver
 
 ## Itération 3 : La fiche donateur Fidèles montre la bascule automatique depuis Silver
 
+**Plan validé tel quel.** Début de l'itération 3 : ~20 minutes restantes annoncées (2026-11-18).
+
 - **Dans le périmètre** : depuis une carte « Parcours 4 · Fidèles » de l'écran principal (lien à ajouter, comme pour Silver), ouvrir une fiche reproduisant `screen-1-detail-p4` : badge « Cycle Fidèles · Prélèvement automatique », encart « Transition automatique détectée » (donateur Thomas Girard, ex-Parcours 1 Silver, basculé le 5 janv. 2026 sans action manuelle), timeline du cycle 12 mois.
 - **Hors périmètre** : les autres fiches restantes (Gold, Platine, réactivation), le tableau de bord, toute logique de détection réelle du changement de fréquence de don (texte en dur, comme pour la fiche Silver).
 - **Critères d'acceptation** (3 au plus) :
@@ -99,7 +101,17 @@ Le plan de livraison de l'équipe compte 5 étapes (vue d'ensemble, fiche Silver
 - **Fichiers prévus** : `frontend/src/lib/cycleFideles.ts` (+ test), `frontend/src/app/fiche/4/page.tsx` (+ css), lien depuis la carte Fidèles dans `page.tsx` (~4 fichiers)
 - **Tests unitaires prévus** : 1 à 2, sur la détection de la transition (ex. « un donateur ex-Silver passé en mensuel est marqué basculé automatiquement »)
 - **Étapes ajoutées à la démo** : retour à l'écran principal, clic sur Fidèles, vérifier la mention de bascule automatique
-- **Bilan** : _à remplir en fin d'itération_
+- **Bilan** :
+  - Durée de codage réelle : 1 minute, pas de dépassement (structure dupliquée depuis la fiche Silver de l'itération 2).
+  - Les 3 critères d'acceptation sont satisfaits tels quels.
+  - Harnais : contrat de déployabilité sans borne, `npm test` passant (8 tests), revue du sous-agent `reviewer` : 1 correction (code mort dans `fiche/4/page.tsx` — la branche `"— vérification requise"` n'était jamais atteinte car `basculementAutomatique(1, "mensuel")` est appelée en dur ; corrigé en conditionnant l'affichage de l'encart de transition à `basculeAuto` plutôt qu'en ramifiant le texte). Aucun blocage sur le signal PM Lab.
+  - Déploiement : frontend reconstruit/republié/redéployé deux fois (une avant la revue, une après la correction), plateforme déjà en place. `/health` et `/sante` toujours 200 sur 8080.
+  - Reporté : rien.
+  - **Modifications** (fichier par fichier) :
+    - `frontend/src/lib/cycleFideles.ts`, `cycleFideles.test.ts` (nouveaux) : données du cycle Fidèles (3 envois) + `basculementAutomatique`, qui réutilise `assignerParcours` — sert les critères 1 et 2.
+    - `frontend/src/app/fiche/4/page.tsx`, `page.module.css` (nouveaux) : fiche donateur Fidèles (en-tête rose, encart de transition conditionnel, timeline du cycle 12 mois) — sert les critères 1 et 2.
+    - `frontend/src/app/page.tsx` (modifié) : la carte Parcours 4 devient un lien vers `/fiche/4` — sert le critère 1.
+    - `e2e/demo.spec.ts` (modifié) : étape de démo sur le retour à l'écran principal puis l'ouverture de la fiche Fidèles.
 
 ## À venir (objectifs ordonnés, détaillés au fil de l'eau)
 
