@@ -113,9 +113,56 @@ Le plan de livraison de l'équipe compte 5 étapes (vue d'ensemble, fiche Silver
     - `frontend/src/app/page.tsx` (modifié) : la carte Parcours 4 devient un lien vers `/fiche/4` — sert le critère 1.
     - `e2e/demo.spec.ts` (modifié) : étape de démo sur le retour à l'écran principal puis l'ouverture de la fiche Fidèles.
 
+## Itérations 4 à 6 — planifiées le 2026-11-18, ~45+ minutes restantes annoncées
+
+Capacité estimée : 4 + 4 + 9 = 17 minutes de codage, plus publication (rapide désormais, la plateforme tourne déjà) et un tour de test par itération. Si l'équipe teste après chaque publication (3 tours de 10 minutes), le total avoisine 45-55 minutes : tendu avec « plus de 45 minutes ». Si le temps est plus proche de 45 que de 60, ⚠️ regrouper les tours de test des itérations 4 et 5 (deux fiches très proches) est une option à discuter avec les cadreurs plutôt que de les réduire.
+
+## Itération 4 : La fiche donateur À réengager montre un plafond d'envois distinct de Fidèles
+
+- **Dans le périmètre** : depuis une carte « Parcours 5 · À réengager » de l'écran principal (lien à ajouter), ouvrir une fiche reproduisant `screen-1-detail-p5` : donatrice Nathalie Dupont (14 mois d'inactivité), badge « Cycle Réactivation · Parcours 5 », encart « Basculement auto à 13 mois », note « 5 à 6 envois sur 12 mois · jamais 9 emails en 6 semaines », timeline (3 envois dont 1 appel à don doux).
+- **Hors périmètre** : la fiche Parcours 6, le tableau de bord, les fiches Gold/Platine, tout calcul réel d'ancienneté (donnée en dur, comme pour Silver et Fidèles).
+- **Critères d'acceptation** (3 au plus) :
+  - Étant donné l'écran principal, quand on clique sur la carte Parcours 5, alors la fiche À réengager s'affiche avec son cycle de réactivation.
+  - Étant donné la fiche, quand on lit son plafond d'envois, alors il diffère explicitement de celui de Fidèles (une règle testée compare les deux plafonds).
+  - Étant donné la fiche, quand on revient en arrière, alors on retrouve l'écran principal.
+- **Hypothèse de l'équipe couverte** : « Nombre d'envois par profil sur 12 mois » — un 3ᵉ niveau de pression distinct (Silver : règle J+60 ; Fidèles : ≤ 2 appels/an ; À réengager : 5-6 envois/an).
+- **Codage estimé** : 4 minutes (même gabarit que les fiches Silver/Fidèles)
+- **Fichiers prévus** : `frontend/src/lib/cycleReactivation.ts` (+ test), `frontend/src/app/fiche/5/page.tsx` (+ css), `frontend/src/app/page.tsx` (lien) — 4 fichiers hors tests
+- **Tests unitaires prévus** : 1 à 2, sur la règle de plafond (ex. « À réengager autorise jusqu'à 6 envois/an, Fidèles jusqu'à 2 »)
+- **Étapes ajoutées à la démo** : retour à l'écran principal, clic sur Parcours 5, vérifier le plafond affiché
+- **Bilan** : _à remplir en fin d'itération_
+
+## Itération 5 : La fiche donateur Inactifs confirme une pression minimale automatique
+
+- **Dans le périmètre** : depuis une carte « Parcours 6 · Inactifs » de l'écran principal, ouvrir une fiche reproduisant `screen-1-detail-p6` : donateur Jean-Paul Mercier (3 ans et demi d'inactivité), badge « Cycle Réactivation · Parcours 6 », encart « Pression minimale automatique », note « Maximum 5 envois sur 12 mois · 1 appel à don annuel », timeline (newsletter + 1 appel plafonné pendant la campagne de fin d'année + anniversaire auto).
+- **Hors périmètre** : le tableau de bord, les fiches Gold/Platine, la suppression de base à 5 ans d'inactivité (explicitement hors périmètre de la passation).
+- **Critères d'acceptation** (3 au plus) :
+  - Étant donné l'écran principal, quand on clique sur la carte Parcours 6, alors la fiche Inactifs s'affiche avec son cycle de réactivation.
+  - Étant donné la fiche, quand on compare son plafond (5 envois/an, 1 appel max pendant la CFA) à celui de Parcours 5 (5-6 envois/an), alors les deux restent cohérents avec la règle testée en itération 4.
+  - Étant donné la fiche, quand on revient en arrière, alors on retrouve l'écran principal.
+- **Hypothèse de l'équipe couverte** : « Nombre d'envois par profil sur 12 mois » (suite de l'itération 4).
+- **Codage estimé** : 4 minutes
+- **Fichiers prévus** : `frontend/src/app/fiche/6/page.tsx` (+ css), `frontend/src/app/page.tsx` (lien), extension de `cycleReactivation.ts` si besoin — 3 à 4 fichiers hors tests
+- **Tests unitaires prévus** : 1, sur le plafond de Parcours 6 (ex. « 1 seul appel à don autorisé pendant la CFA pour les inactifs »)
+- **Étapes ajoutées à la démo** : retour à l'écran principal, clic sur Parcours 6, vérifier la pression minimale
+- **Bilan** : _à remplir en fin d'itération_
+
+## Itération 6 : Le tableau de bord coordination détecte un envoi en doublon entre équipes
+
+- **Dans le périmètre** : nouvel écran « Tableau de bord · Coordination », accessible depuis un bouton de l'écran principal, reproduisant `screen-1-dashboard` : bannière d'alerte (« 3 donateurs du cycle Accueil ciblés par un envoi Collecte ET Communication »), liste des envois prévus de la semaine avec leur source (Collecte/Communication/Événements) et le marqueur « ⚠️ Doublon » sur l'envoi en conflit.
+- **Hors périmètre** : les KPI (taux d'ouverture, de clic, etc. — décoratifs, à ajouter seulement si le temps le permet, données en dur), la modification réelle du planning d'envoi.
+- **Critères d'acceptation** (3 au plus) :
+  - Étant donné l'écran principal, quand on ouvre le tableau de bord, alors la liste des envois prévus de la semaine s'affiche avec leur source.
+  - Étant donné la liste, quand deux envois ciblent le même cycle depuis deux sources différentes la même semaine, alors une règle testée les signale comme doublon et l'écran l'affiche.
+  - Étant donné le tableau de bord, quand on revient en arrière, alors on retrouve l'écran principal.
+- **Hypothèse de l'équipe couverte** : « Envois non coordonnés détectés en test » — cible 0 doublon manqué.
+- **Codage estimé** : 9 minutes (nouvel écran plus dense que les fiches précédentes)
+- **Fichiers prévus** : `frontend/src/lib/coordination.ts` (+ test), `frontend/src/app/tableau-de-bord/page.tsx` (+ css), `frontend/src/app/page.tsx` (lien) — 5 fichiers hors tests
+- **Tests unitaires prévus** : 2, sur la détection de doublon (un cas en conflit, un cas sans conflit)
+- **Étapes ajoutées à la démo** : ouvrir le tableau de bord, vérifier la bannière d'alerte et le marqueur doublon
+- **Bilan** : _à remplir en fin d'itération_
+
 ## À venir (objectifs ordonnés, détaillés au fil de l'eau)
 
-1. Fiches donateur réactivation (Parcours 5 À réengager, Parcours 6 Inactifs) : pression limitée à 5-6 envois — hypothèse « 3 niveaux de pression distincts ».
-2. Fiches donateur Gold et Platine (Parcours 2, 3) : complètent la vue d'ensemble.
-3. Tableau de bord coordination : alerte sur envoi en doublon entre équipes — hypothèse « 0 envoi non coordonné détecté en test ».
-4. Sélecteur de persona complet avec droits différenciés par rôle, si le sélecteur léger de l'itération 1 est jugé insuffisant.
+1. Fiches donateur Gold et Platine (Parcours 2, 3) : complètent la vue d'ensemble, même gabarit que Silver.
+2. Sélecteur de persona complet avec droits différenciés par rôle, si le sélecteur léger de l'itération 1 est jugé insuffisant.
