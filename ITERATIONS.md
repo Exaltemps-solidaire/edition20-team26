@@ -119,6 +119,8 @@ Capacité estimée : 4 + 4 + 9 = 17 minutes de codage, plus publication (rapide 
 
 ## Itération 4 : La fiche donateur À réengager montre un plafond d'envois distinct de Fidèles
 
+**Plan validé tel quel.** Début de l'itération 4 : moins de 10 minutes restantes annoncées (2026-11-18). ⚠️ Ne laisse pas la place à un tour de test complet (10 min) avant le pitch — le développeur a choisi de coder quand même, en acceptant ce risque.
+
 - **Dans le périmètre** : depuis une carte « Parcours 5 · À réengager » de l'écran principal (lien à ajouter), ouvrir une fiche reproduisant `screen-1-detail-p5` : donatrice Nathalie Dupont (14 mois d'inactivité), badge « Cycle Réactivation · Parcours 5 », encart « Basculement auto à 13 mois », note « 5 à 6 envois sur 12 mois · jamais 9 emails en 6 semaines », timeline (3 envois dont 1 appel à don doux).
 - **Hors périmètre** : la fiche Parcours 6, le tableau de bord, les fiches Gold/Platine, tout calcul réel d'ancienneté (donnée en dur, comme pour Silver et Fidèles).
 - **Critères d'acceptation** (3 au plus) :
@@ -130,7 +132,17 @@ Capacité estimée : 4 + 4 + 9 = 17 minutes de codage, plus publication (rapide 
 - **Fichiers prévus** : `frontend/src/lib/cycleReactivation.ts` (+ test), `frontend/src/app/fiche/5/page.tsx` (+ css), `frontend/src/app/page.tsx` (lien) — 4 fichiers hors tests
 - **Tests unitaires prévus** : 1 à 2, sur la règle de plafond (ex. « À réengager autorise jusqu'à 6 envois/an, Fidèles jusqu'à 2 »)
 - **Étapes ajoutées à la démo** : retour à l'écran principal, clic sur Parcours 5, vérifier le plafond affiché
-- **Bilan** : _à remplir en fin d'itération_
+- **Bilan** :
+  - Durée de codage réelle : 1 minute, pas de dépassement. Exécutée malgré le temps serré (< 10 min annoncées), à la demande explicite du développeur — pas de tour de test complet possible avant le pitch, risque assumé.
+  - Les 3 critères d'acceptation sont satisfaits tels quels.
+  - Harnais : contrat de déployabilité sans borne, `npm test` passant (10 tests). Pas de revue `reviewer` cette fois, par souci de temps — à faire relire a posteriori si le temps le permet. Aucun blocage sur le signal PM Lab.
+  - Déploiement : frontend reconstruit/republié/redéployé, plateforme déjà en place. `/health` et `/sante` toujours 200 sur 8080.
+  - Reporté : rien côté périmètre de l'itération. Reporté côté process : la revue de code par le sous-agent `reviewer`.
+  - **Modifications** (fichier par fichier) :
+    - `frontend/src/lib/cycleReactivation.ts`, `cycleReactivation.test.ts` (nouveaux) : données du cycle À réengager + plafonds d'envois par profil (`fideles`, `reactivation5`, `reactivation6`) et `plafondsDistincts`, testée — sert les critères 1 et 2.
+    - `frontend/src/app/fiche/5/page.tsx`, `page.module.css` (nouveaux) : fiche donateur À réengager (en-tête violet, plafond affiché conditionnellement, timeline) — sert les critères 1 et 2.
+    - `frontend/src/app/page.tsx` (modifié) : la carte Parcours 5 devient un lien vers `/fiche/5` — sert le critère 1.
+    - `e2e/demo.spec.ts` (modifié) : étape de démo sur le retour puis l'ouverture de la fiche À réengager.
 
 ## Itération 5 : La fiche donateur Inactifs confirme une pression minimale automatique
 

@@ -26,4 +26,11 @@ test("Démo : le cas passant", async ({ page }) => {
     await expect(page.getByText("Thomas Girard")).toBeVisible();
     await expect(page.getByText("0 intervention de la responsable collecte.")).toBeVisible();
   });
+
+  await test.step("Je reviens, puis j'ouvre la fiche À réengager : plafond distinct de Fidèles", async () => {
+    await page.getByText("← Retour aux parcours").click();
+    await page.getByText("Parcours 5 · À réengager").click();
+    await expect(page.getByText("Nathalie Dupont")).toBeVisible();
+    await expect(page.getByText("distinct de Fidèles")).toBeVisible();
+  });
 });
