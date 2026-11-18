@@ -59,6 +59,8 @@ Le plan de livraison de l'équipe compte 5 étapes (vue d'ensemble, fiche Silver
 
 ## Itération 2 : La fiche donateur Silver montre qu'aucun appel à don n'est prévu avant J+60
 
+**Début de l'itération 2** : ~30 minutes restantes annoncées (2026-11-18).
+
 - **Dans le périmètre** : depuis la carte « Parcours 1 · Silver » de l'écran principal, ouvrir la fiche donateur reproduisant `screen-1-detail-p1` : cycle actif affiché, envois prévus listés avec leur date.
 - **Hors périmètre** : les autres fiches (Gold, Platine, Fidèles, réactivation), le tableau de bord, le calcul RFM réel (donateur en dur pour cette fiche).
 - **Critères d'acceptation** (3 au plus) :
@@ -70,14 +72,38 @@ Le plan de livraison de l'équipe compte 5 étapes (vue d'ensemble, fiche Silver
 - **Fichiers prévus** : nouvelle route/page fiche donateur, composant liste des envois, lien depuis la carte Silver (~4 fichiers)
 - **Tests unitaires prévus** : 1 à 2, sur la règle « aucun envoi d'appel à don daté avant J+60 »
 - **Étapes ajoutées à la démo** : cliquer sur la carte Silver, vérifier l'absence d'appel à don avant J+60
-- **Bilan** : _à remplir en fin d'itération (durée de codage réelle, dépassement éventuel, fait, reporté, modifications fichier par fichier)_
+- **Bilan** :
+  - Durée de codage réelle : 3 minutes, pas de dépassement.
+  - Les 3 critères d'acceptation sont satisfaits tels quels : clic sur la carte Parcours 1 → fiche Silver, aucun envoi « appel » daté avant J+60 (règle testée), retour vers l'écran principal (lien `/`).
+  - Harnais : contrat de déployabilité sans borne, `npm test` passant (7 tests), revue du sous-agent `reviewer` sans correction nécessaire. Démo Playwright étendue et passante contre le conteneur déployé (`localhost:8080`). Aucun blocage sur le signal PM Lab.
+  - Déploiement : plateforme déjà démarrée (itération 1) — seul le frontend a été reconstruit/republié/redéployé, cycle complet en quelques secondes. `/health` et `/sante` toujours 200 sur 8080.
+  - Reporté : rien.
+  - **Modifications** (fichier par fichier) :
+    - `frontend/src/lib/cycleSilver.ts`, `cycleSilver.test.ts` (nouveaux) : données du cycle Silver (4 envois) + règle `aucunAppelAvantJ60`, testée — sert le critère 2.
+    - `frontend/src/app/fiche/1/page.tsx`, `page.module.css` (nouveaux) : fiche donateur Silver (en-tête, score RFM, timeline des envois) — sert les critères 1 et 2.
+    - `frontend/src/app/page.tsx` (modifié) : la carte Parcours 1 devient un lien `next/link` vers `/fiche/1` — sert le critère 1.
+    - `e2e/demo.spec.ts` (modifié) : étape de démo sur l'ouverture de la fiche Silver et l'absence d'appel avant J+60.
 
 ---
 
+## Itération 3 : La fiche donateur Fidèles montre la bascule automatique depuis Silver
+
+- **Dans le périmètre** : depuis une carte « Parcours 4 · Fidèles » de l'écran principal (lien à ajouter, comme pour Silver), ouvrir une fiche reproduisant `screen-1-detail-p4` : badge « Cycle Fidèles · Prélèvement automatique », encart « Transition automatique détectée » (donateur Thomas Girard, ex-Parcours 1 Silver, basculé le 5 janv. 2026 sans action manuelle), timeline du cycle 12 mois.
+- **Hors périmètre** : les autres fiches restantes (Gold, Platine, réactivation), le tableau de bord, toute logique de détection réelle du changement de fréquence de don (texte en dur, comme pour la fiche Silver).
+- **Critères d'acceptation** (3 au plus) :
+  - Étant donné l'écran principal, quand on clique sur la carte Parcours 4 Fidèles, alors la fiche donateur Fidèles s'affiche avec son cycle actif.
+  - Étant donné la fiche Fidèles, quand on lit l'encart de transition, alors il indique explicitement que le basculement depuis le Parcours 1 Silver s'est fait sans action manuelle de la responsable collecte.
+  - Étant donné la fiche Fidèles, quand on revient en arrière, alors on retrouve l'écran principal.
+- **Hypothèse de l'équipe couverte** : « Actions manuelles nécessaires au changement de cycle » — cible 0.
+- **Codage estimé** : 6 minutes (même structure que la fiche Silver, à dupliquer et adapter)
+- **Fichiers prévus** : `frontend/src/lib/cycleFideles.ts` (+ test), `frontend/src/app/fiche/4/page.tsx` (+ css), lien depuis la carte Fidèles dans `page.tsx` (~4 fichiers)
+- **Tests unitaires prévus** : 1 à 2, sur la détection de la transition (ex. « un donateur ex-Silver passé en mensuel est marqué basculé automatiquement »)
+- **Étapes ajoutées à la démo** : retour à l'écran principal, clic sur Fidèles, vérifier la mention de bascule automatique
+- **Bilan** : _à remplir en fin d'itération_
+
 ## À venir (objectifs ordonnés, détaillés au fil de l'eau)
 
-1. Fiche donateur Fidèles (Parcours 4) : bascule automatique depuis Silver après passage au prélèvement — hypothèse « 0 action manuelle au changement de cycle ».
-2. Fiches donateur réactivation (Parcours 5 À réengager, Parcours 6 Inactifs) : pression limitée à 5-6 envois — hypothèse « 3 niveaux de pression distincts ».
-3. Fiches donateur Gold et Platine (Parcours 2, 3) : complètent la vue d'ensemble.
-4. Tableau de bord coordination : alerte sur envoi en doublon entre équipes — hypothèse « 0 envoi non coordonné détecté en test ».
-5. Sélecteur de persona complet avec droits différenciés par rôle, si le sélecteur léger de l'itération 1 est jugé insuffisant.
+1. Fiches donateur réactivation (Parcours 5 À réengager, Parcours 6 Inactifs) : pression limitée à 5-6 envois — hypothèse « 3 niveaux de pression distincts ».
+2. Fiches donateur Gold et Platine (Parcours 2, 3) : complètent la vue d'ensemble.
+3. Tableau de bord coordination : alerte sur envoi en doublon entre équipes — hypothèse « 0 envoi non coordonné détecté en test ».
+4. Sélecteur de persona complet avec droits différenciés par rôle, si le sélecteur léger de l'itération 1 est jugé insuffisant.

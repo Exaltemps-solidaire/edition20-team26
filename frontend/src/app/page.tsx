@@ -1,6 +1,10 @@
+import Link from "next/link";
 import styles from "./page.module.css";
 import RoleSwitcher from "@/components/RoleSwitcher";
 import { PARCOURS, assignerParcours, type Cycle } from "@/lib/parcours";
+
+// Seul le Parcours 1 Silver a une fiche donateur pour l'instant (itération 2).
+const FICHES: Record<number, string> = { 1: "/fiche/1" };
 
 const BADGE_CLASSE: Record<Cycle, string> = {
   accueil: styles.badgeAccueil,
@@ -32,11 +36,8 @@ export default function Home() {
         <div className={styles.parcoursList}>
           {PARCOURS.map((parcours) => {
             const estAssigne = parcours.id === nouveauDonateurParcours;
-            return (
-              <div
-                key={parcours.id}
-                className={`${styles.parcoursItem} ${estAssigne ? styles.assigne : ""}`}
-              >
+            const contenu = (
+              <>
                 <div className={styles.parcoursNum}>{parcours.id}</div>
                 <div>
                   <div className={styles.parcoursLabel}>{parcours.label}</div>
@@ -48,6 +49,17 @@ export default function Home() {
                 {estAssigne && (
                   <span className={styles.affecteTag}>✓ Nouveau donateur affecté</span>
                 )}
+              </>
+            );
+            const classeItem = `${styles.parcoursItem} ${estAssigne ? styles.assigne : ""}`;
+            const fiche = FICHES[parcours.id];
+            return fiche ? (
+              <Link key={parcours.id} href={fiche} className={classeItem}>
+                {contenu}
+              </Link>
+            ) : (
+              <div key={parcours.id} className={classeItem}>
+                {contenu}
               </div>
             );
           })}

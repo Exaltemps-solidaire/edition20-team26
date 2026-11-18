@@ -12,4 +12,11 @@ test("Démo : le cas passant", async ({ page }) => {
     await expect(page.getByText("Parcours 6 · Inactifs")).toBeVisible();
     await expect(page.getByText("✓ Nouveau donateur affecté")).toBeVisible();
   });
+
+  await test.step("J'ouvre la fiche donateur Silver : aucun appel à don avant J+60", async () => {
+    await page.getByText("Parcours 1 · Silver").click();
+    await expect(page.getByText("Sophie Renard")).toBeVisible();
+    await expect(page.getByText("0 appel à don avant J+60")).toBeVisible();
+    await expect(page.getByText("Appel à don · J+61")).toBeVisible();
+  });
 });
