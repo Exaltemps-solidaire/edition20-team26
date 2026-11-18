@@ -1,0 +1,124 @@
+.page {
+  display: flex;
+  justify-content: center;
+  background: #c8dce8;
+  min-height: 100%;
+  flex: 1;
+  font-family: var(--font-geist-sans), Arial, sans-serif;
+}
+
+.screen {
+  width: 100%;
+  max-width: 480px;
+  background: var(--i4m-blanc);
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background: var(--i4m-bleu);
+  padding: 18px 20px 14px;
+}
+
+.headerTitle {
+  color: var(--i4m-blanc);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.headerSub {
+  color: var(--i4m-bleu-tres-clair);
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.sectionLabel {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--i4m-bleu);
+  padding: 18px 20px 6px;
+}
+
+.parcoursList {
+  margin: 0 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.parcoursItem {
+  background: var(--i4m-bleu-tres-clair);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+
+.parcoursItem.assigne {
+  outline: 2px solid var(--i4m-rose-fonce);
+}
+
+.parcoursNum {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--i4m-bleu);
+  color: var(--i4m-blanc);
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.parcoursLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--i4m-texte);
+}
+
+.parcoursSeuil {
+  font-size: 11px;
+  color: var(--i4m-bleu);
+  margin-top: 1px;
+  font-weight: 500;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+  margin-top: 4px;
+}
+
+.badgeAccueil {
+  background: #e0ecfa;
+  color: var(--i4m-bleu);
+}
+
+.badgePrelevement {
+  background: #fff0f7;
+  color: var(--i4m-rose-fonce);
+}
+
+.badgeReactivation {
+  background: #fff8e0;
+  color: #c9960a;
+}
+
+.affecteTag {
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--i4m-rose-fonce);
+  background: #fff0f7;
+  padding: 2px 7px;
+  border-radius: 20px;
+}
