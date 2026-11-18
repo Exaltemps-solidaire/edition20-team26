@@ -47,4 +47,11 @@ test("Démo : le cas passant", async ({ page }) => {
     await expect(page.getByText("⚠️ Conflit détecté cette semaine")).toBeVisible();
     await expect(page.getByText("⚠️ Doublon")).toHaveCount(2);
   });
+
+  await test.step("Je vois les indicateurs clés et le plafond de pression de la semaine", async () => {
+    await expect(page.getByText("📊 Indicateurs clés – Nov. 2026")).toBeVisible();
+    await expect(page.getByText("Taux d'ouverture moyen")).toBeVisible();
+    await expect(page.getByText("🛡️ Plafond de pression – Semaine en cours")).toBeVisible();
+    await expect(page.getByText("Donateurs actifs")).toBeVisible();
+  });
 });

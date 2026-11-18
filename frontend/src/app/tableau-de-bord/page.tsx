@@ -15,6 +15,15 @@ const LEGEND_LABEL: Record<Source, string> = {
   evenements: "Événements",
 };
 
+type Kpi = { valeur: string; label: string; sousTitre: string; accent?: boolean };
+
+const KPIS: Kpi[] = [
+  { valeur: "38 %", label: "Taux d'ouverture moyen", sousTitre: "Cycle Accueil · J+14" },
+  { valeur: "12 %", label: "Taux de clic", sousTitre: "Email « impact don »" },
+  { valeur: "1,4 %", label: "Taux de désabonnement", sousTitre: "Cycle Réactivation P6", accent: true },
+  { valeur: "24 K€", label: "Collecté · CFA prévisionnelle", sousTitre: "Campagne déc. 2026" },
+];
+
 export default function TableauDeBord() {
   const doublons = detecterDoublons(ENVOIS_SEMAINE);
   const conflits = detailsConflits(ENVOIS_SEMAINE);
@@ -36,6 +45,40 @@ export default function TableauDeBord() {
           </div>
         </div>
       ))}
+
+      <div className={styles.sectionLabel}>📊 Indicateurs clés – Nov. 2026</div>
+      <div className={styles.kpiGrid}>
+        {KPIS.map((kpi) => (
+          <div className={styles.kpiCard} key={kpi.label}>
+            <div className={`${styles.kpiVal} ${kpi.accent ? styles.kpiValAccent : ""}`}>
+              {kpi.valeur}
+            </div>
+            <div className={styles.kpiLabel}>{kpi.label}</div>
+            <div className={styles.kpiSub}>{kpi.sousTitre}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className={styles.sectionLabel}>🛡️ Plafond de pression – Semaine en cours</div>
+      <div className={styles.pression}>
+        <div className={styles.pressionRegle}>
+          Règle : max 1 email par donateur par semaine, toutes sources confondues
+        </div>
+        <div className={styles.pressionStats}>
+          <div className={styles.pressionStat}>
+            <div className={styles.pressionValeur}>47 642</div>
+            <div className={styles.pressionLabel}>Donateurs actifs</div>
+          </div>
+          <div className={styles.pressionStat}>
+            <div className={`${styles.pressionValeur} ${styles.pressionValeurAlerte}`}>
+              {conflits.length}
+            </div>
+            <div className={styles.pressionLabel}>
+              Conflit{conflits.length > 1 ? "s" : ""} bloqué{conflits.length > 1 ? "s" : ""} cette semaine
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div className={styles.sectionLabel}>📅 Envois prévus · Semaine du 10 nov.</div>
 

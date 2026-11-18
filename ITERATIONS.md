@@ -249,10 +249,49 @@ se fait par redimensionnement du navigateur (ou un contrôle Playwright ponctuel
     - `frontend/src/app/page.tsx`, `page.module.css` (modifiés) : écran principal migré vers `EcranMobile`, CSS `.page`/`.screen` local retiré — sert les critères 1 et 2.
     - `frontend/src/app/tableau-de-bord/page.tsx`, `page.module.css` (modifiés) : tableau de bord migré vers `EcranMobile`, CSS `.page`/`.screen` local retiré — sert les critères 1 et 2.
 
-## Itération 8 : Le gabarit responsive est appliqué aux fiches Silver et Fidèles
+## ⚠️ Retour de l'équipe sur l'itération 6 : réordonnancement
+
+L'équipe signale qu'il manque, sur le tableau de bord, les KPI de campagne et un récapitulatif des
+plafonds de pression par profil. Les KPI étaient un report conscient de l'itération 6 (hors périmètre
+explicite, « décoratifs, à ajouter seulement si le temps le permet »). Le récapitulatif des plafonds
+n'était pas dans le plan initial de la passation pour cet écran — il existe déjà, mais réparti sur les
+4 fiches donateur. Priorité confirmée par le développeur : cette itération passe **avant** le responsive
+des fiches, qui devient donc itération 9 puis 10 (anciennement 8 et 9).
+
+## Itération 8 : Le tableau de bord affiche les KPI de campagne et le plafond de pression de la semaine
+
+**Plan validé tel quel, corrigé après lecture du prototype.** **Début de l'itération 8** : 10-25 minutes restantes annoncées (2026-11-18). Codage estimé (5 min) et publication tiennent largement ; le tour de test complet (10 min) reste possible mais sans grande marge après.
+
+- ❗️ **Correction par rapport au plan proposé avant validation** : le prototype (`passation/prototype/index.html`, `screen-1-dashboard`, lignes ~1360-1400) ne montre pas un récapitulatif des plafonds par profil (Silver/Fidèles/À réengager/Inactifs) — il montre une **règle globale par semaine** (« max 1 email par donateur par semaine, toutes sources confondues ») avec 2 statistiques (donateurs actifs, conflits bloqués). Je reproduis fidèlement le prototype plutôt que l'idée initiale.
+- **Dans le périmètre** :
+  - une bande de 4 KPI décoratifs en haut du tableau de bord (taux d'ouverture 38 % · Cycle Accueil J+14, taux de clic 12 % · Email « impact don », taux de désabonnement 1,4 % · Cycle Réactivation P6, montant collecté 24 K€ · CFA prévisionnelle · Campagne déc. 2026 — valeurs d'exemple reprises telles quelles du prototype) ;
+  - une section « Plafond de pression · Semaine en cours » : la règle en texte, puis 2 statistiques — donateurs actifs (47 642, valeur d'exemple du prototype) et conflits bloqués cette semaine, **ce dernier dérivé de la détection de doublons déjà codée** (`detecterDoublons`, itération 6), pas d'une nouvelle valeur en dur.
+- **Hors périmètre** : calcul réel des KPI d'email (données figées), modification des fiches donateur, tout graphique.
+- **Critères d'acceptation** (3 au plus) :
+  - Étant donné le tableau de bord, quand on l'ouvre, alors une bande de 4 KPI s'affiche avec les valeurs du prototype.
+  - Étant donné le tableau de bord, quand on regarde la section « Plafond de pression », alors la règle de la semaine s'affiche avec le nombre de conflits bloqués, cohérent avec les marqueurs « ⚠️ Doublon » déjà affichés plus bas sur l'écran (même source : `detecterDoublons`).
+  - Étant donné le changement, quand on lance `npm test` et `npm run build`, alors tout passe sans régression.
+- **Hypothèse de l'équipe couverte** : « Envois non coordonnés détectés en test » — le compteur de conflits bloqués rend plus visible la détection déjà testée en itération 6.
+- **Codage estimé** : 5 minutes
+- **Fichiers prévus** : `frontend/src/app/tableau-de-bord/page.tsx`, `page.module.css` — 2 fichiers, aucun nouveau fichier de logique (réutilise `detecterDoublons`, déjà testé)
+- **Tests unitaires prévus** : aucun — pas de nouvelle logique métier, uniquement de l'affichage et la réutilisation d'une fonction déjà testée (conforme à `docs/testing-guidelines.md`, §5)
+- **Étapes ajoutées à la démo** : ouvrir le tableau de bord, vérifier la bande de KPI et la section plafond de pression
+- **Bilan** :
+  - Durée de codage réelle : 3 minutes, pas de dépassement.
+  - Les 3 critères d'acceptation sont satisfaits : la bande de 4 KPI affiche les valeurs du prototype telles quelles ; la section « Plafond de pression » affiche la règle hebdomadaire globale et les 2 statistiques (47 642 donateurs actifs en valeur du prototype, conflits bloqués dérivé de `detailsConflits(ENVOIS_SEMAINE).length` — même source que les marqueurs « ⚠️ Doublon » déjà affichés) ; `npm test` (18 tests) et `npm run build` passent sans régression.
+  - Harnais : contrat de déployabilité sans borne, `npm test` passant, revue du sous-agent `reviewer` : rien à signaler côté code (une note informative sur le décompte de tests dans ma formulation de prompt, sans rapport avec le code livré).
+  - Déploiement : frontend reconstruit/republié/redéployé (`podman compose up -d --force-recreate frontend`), même avertissement bénin « pod already exists » que les itérations précédentes, sans effet sur le redémarrage du conteneur. `/health` et `/sante` vérifiés 200 sur 8080, `/health` 200 sur 8081 ; HTML vérifié par `curl` : les nouvelles classes `kpiVal`/`pressionValeur` apparaissent bien sur `/tableau-de-bord`.
+  - Signalé à PM Lab : version 8, `moteur_avance: false` (enregistrée quand même).
+  - Reporté : rien côté périmètre de cette itération.
+  - **Modifications** (fichier par fichier) :
+    - `frontend/src/app/tableau-de-bord/page.tsx` (modifié) : ajout de la bande de 4 KPI et de la section « Plafond de pression » (règle + 2 statistiques, la seconde dérivée de `detailsConflits` déjà testé) — sert les 3 critères.
+    - `frontend/src/app/tableau-de-bord/page.module.css` (modifié) : classes `kpiGrid`/`kpiCard`/`kpiVal`/`kpiValAccent`/`kpiLabel`/`kpiSub` et `pression`/`pressionRegle`/`pressionStats`/`pressionStat`/`pressionValeur`/`pressionValeurAlerte`/`pressionLabel`, cohérentes avec les tokens i4m existants — sert les critères 1 et 2.
+    - `e2e/demo.spec.ts` (modifié, hors DoD) : nouvelle étape de démo vérifiant la bande de KPI et la section plafond de pression.
+
+## Itération 9 : Le gabarit responsive est appliqué aux fiches Silver et Fidèles
 
 - **Dans le périmètre** : remplacer le CSS `.page`/`.screen` local de `fiche/1` et `fiche/4` par le composant `EcranMobile` de l'itération 7 (changement mécanique, pas de nouvelle logique).
-- **Hors périmètre** : les fiches 5 et 6 (itération 9), tout changement de contenu.
+- **Hors périmètre** : les fiches 5 et 6 (itération 10), tout changement de contenu.
 - **Critères d'acceptation** (3 au plus) :
   - Étant donné un viewport de 360px, quand on ouvre les fiches Silver ou Fidèles, alors aucun débordement horizontal.
   - Étant donné un viewport de 1280px, quand on ouvre ces fiches, alors le contenu reste centré.
@@ -264,7 +303,7 @@ se fait par redimensionnement du navigateur (ou un contrôle Playwright ponctuel
 - **Étapes ajoutées à la démo** : aucune
 - **Bilan** : _à remplir en fin d'itération_
 
-## Itération 9 : Le gabarit responsive est appliqué aux fiches À réengager et Inactifs
+## Itération 10 : Le gabarit responsive est appliqué aux fiches À réengager et Inactifs
 
 - **Dans le périmètre** : même changement mécanique pour `fiche/5` et `fiche/6`. Dernière itération de la série : tous les écrans partagent alors le même gabarit responsive.
 - **Hors périmètre** : toute nouvelle fiche (Gold, Platine).

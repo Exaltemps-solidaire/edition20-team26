@@ -45,6 +45,85 @@
   padding: 18px 20px 6px;
 }
 
+.kpiGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 0 20px 16px;
+}
+
+.kpiCard {
+  background: var(--i4m-bleu-tres-clair);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.kpiVal {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--i4m-bleu);
+}
+
+.kpiValAccent {
+  color: var(--i4m-rose-fonce);
+}
+
+.kpiLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--i4m-texte);
+  margin-top: 2px;
+}
+
+.kpiSub {
+  font-size: 10px;
+  color: var(--i4m-bleu-clair);
+  margin-top: 1px;
+}
+
+.pression {
+  margin: 0 20px 16px;
+  background: var(--i4m-bleu-tres-clair);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.pressionRegle {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--i4m-texte);
+  margin-bottom: 8px;
+}
+
+.pressionStats {
+  display: flex;
+  gap: 10px;
+}
+
+.pressionStat {
+  flex: 1;
+  background: var(--i4m-blanc);
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+}
+
+.pressionValeur {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--i4m-bleu);
+}
+
+.pressionValeurAlerte {
+  color: var(--i4m-rose-fonce);
+}
+
+.pressionLabel {
+  font-size: 10px;
+  color: var(--i4m-texte);
+  margin-top: 2px;
+}
+
 .legend {
   display: flex;
   gap: 14px;
