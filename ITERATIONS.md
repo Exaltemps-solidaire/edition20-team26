@@ -198,6 +198,75 @@ Capacité estimée : 4 + 4 + 9 = 17 minutes de codage, plus publication (rapide 
     - `frontend/src/app/page.tsx`, `page.module.css` (modifiés) : bouton « Voir le tableau de bord coordination → » ajouté en bas de l'écran principal — sert le critère 1.
     - `e2e/demo.spec.ts` (modifié) : étape de démo sur l'ouverture du tableau de bord et la vérification des 2 marqueurs de doublon.
 
+## ✂️ Demande du développeur : rendre tous les écrans responsives
+
+Demande nouvelle, hors du plan initial de la passation. Elle ne tient pas dans une seule itération :
+les 6 écrans existants (principal, 4 fiches donateur, tableau de bord) dupliquent chacun le même CSS
+de conteneur (`.page`/`.screen`, vérifié par recherche dans le code), ce qui dépasse largement la règle
+« au plus une modification de deux écrans existants ». Je la découpe en 3 itérations mécaniques : la
+première crée et valide un gabarit d'écran partagé et responsive sur 2 écrans, les deux suivantes
+l'appliquent aux 4 fiches restantes. ⚠️ Priorité à confirmer avec les cadreurs : ces 3 itérations
+passent devant les fiches Gold/Platine et le sélecteur de persona complet, repoussés en bas de la
+liste « À venir ».
+
+Aucune de ces itérations n'ajoute de logique métier : pas de nouveau test Vitest prévu (conforme à
+`docs/testing-guidelines.md`, §5 — le balisage et le CSS purs n'en nécessitent pas). La vérification
+se fait par redimensionnement du navigateur (ou un contrôle Playwright ponctuel, hors suite de tests)
+à au moins deux largeurs : un mobile étroit (360px) et un desktop (1280px).
+
+## Itération 7 : Le gabarit d'écran devient responsive, validé sur l'écran principal et le tableau de bord
+
+- **Dans le périmètre** : extraire le CSS dupliqué `.page`/`.screen` dans un composant partagé
+  (`frontend/src/components/EcranMobile.tsx` + son CSS module), avec les ajustements responsives
+  (hauteur de viewport mobile fiable `100dvh`, pas de débordement horizontal sous 360px, centrage
+  propre au-delà de 480px). L'appliquer à l'écran principal (`page.tsx`) et au tableau de bord
+  (`tableau-de-bord/page.tsx`), qui n'utilisent plus leur propre `.page`/`.screen` local.
+- **Hors périmètre** : les 4 fiches donateur (itérations 8 et 9), tout changement visuel au-delà du
+  conteneur (couleurs, contenus).
+- **Critères d'acceptation** (3 au plus) :
+  - Étant donné un viewport de 360px de large, quand on ouvre l'écran principal ou le tableau de
+    bord, alors aucun élément ne déborde horizontalement.
+  - Étant donné un viewport de 1280px de large, quand on ouvre ces deux écrans, alors le contenu
+    reste centré et lisible, sans s'étirer sur toute la largeur.
+  - Étant donné les deux écrans migrés, quand on lance `npm test` et `npm run build`, alors tout
+    passe sans régression visuelle signalée par la démo Playwright existante.
+- **Hypothèse de l'équipe couverte** : aucune — demande du développeur, hors hypothèses de la passation.
+- **Codage estimé** : 6 minutes
+- **Fichiers prévus** : `frontend/src/components/EcranMobile.tsx` (+ css), `frontend/src/app/page.tsx` (+ css), `frontend/src/app/tableau-de-bord/page.tsx` (+ css) — 6 fichiers, aucun test (voir note ci-dessus)
+- **Tests unitaires prévus** : aucun (pas de logique métier ajoutée)
+- **Étapes ajoutées à la démo** : aucune (pas de nouveau contenu fonctionnel)
+- **Bilan** : _à remplir en fin d'itération_
+
+## Itération 8 : Le gabarit responsive est appliqué aux fiches Silver et Fidèles
+
+- **Dans le périmètre** : remplacer le CSS `.page`/`.screen` local de `fiche/1` et `fiche/4` par le composant `EcranMobile` de l'itération 7 (changement mécanique, pas de nouvelle logique).
+- **Hors périmètre** : les fiches 5 et 6 (itération 9), tout changement de contenu.
+- **Critères d'acceptation** (3 au plus) :
+  - Étant donné un viewport de 360px, quand on ouvre les fiches Silver ou Fidèles, alors aucun débordement horizontal.
+  - Étant donné un viewport de 1280px, quand on ouvre ces fiches, alors le contenu reste centré.
+  - Étant donné les fiches migrées, quand on lance `npm test`, alors rien ne régresse.
+- **Hypothèse de l'équipe couverte** : aucune.
+- **Codage estimé** : 3 minutes
+- **Fichiers prévus** : `frontend/src/app/fiche/1/page.tsx` (+ suppression du CSS dupliqué), `frontend/src/app/fiche/4/page.tsx` (+ suppression du CSS dupliqué) — 4 fichiers
+- **Tests unitaires prévus** : aucun
+- **Étapes ajoutées à la démo** : aucune
+- **Bilan** : _à remplir en fin d'itération_
+
+## Itération 9 : Le gabarit responsive est appliqué aux fiches À réengager et Inactifs
+
+- **Dans le périmètre** : même changement mécanique pour `fiche/5` et `fiche/6`. Dernière itération de la série : tous les écrans partagent alors le même gabarit responsive.
+- **Hors périmètre** : toute nouvelle fiche (Gold, Platine).
+- **Critères d'acceptation** (3 au plus) :
+  - Étant donné un viewport de 360px, quand on ouvre les fiches À réengager ou Inactifs, alors aucun débordement horizontal.
+  - Étant donné un viewport de 1280px, quand on ouvre ces fiches, alors le contenu reste centré.
+  - Étant donné les 6 écrans de l'application, quand on les parcourt tous à 360px et à 1280px, alors aucun ne déborde ni ne s'étire anormalement.
+- **Hypothèse de l'équipe couverte** : aucune.
+- **Codage estimé** : 3 minutes
+- **Fichiers prévus** : `frontend/src/app/fiche/5/page.tsx` (+ suppression du CSS dupliqué), `frontend/src/app/fiche/6/page.tsx` (+ suppression du CSS dupliqué) — 4 fichiers
+- **Tests unitaires prévus** : aucun
+- **Étapes ajoutées à la démo** : aucune
+- **Bilan** : _à remplir en fin d'itération_
+
 ## À venir (objectifs ordonnés, détaillés au fil de l'eau)
 
 1. Fiches donateur Gold et Platine (Parcours 2, 3) : complètent la vue d'ensemble, même gabarit que Silver.
