@@ -318,7 +318,31 @@ des fiches, qui devient donc itération 9 puis 10 (anciennement 8 et 9).
 - **Étapes ajoutées à la démo** : aucune
 - **Bilan** : _à remplir en fin d'itération_
 
+## ✂️ Demande du développeur : prendre en compte les écrans ordinateurs dans la responsivité
+
+Demande nouvelle, hors du plan initial de la passation (qui ne montre aucun écran bureau : ni
+`PASSATION.md`, ni `prototype/index.html` n'en parlent). Direction confirmée par le développeur : au
+lieu d'un simple élargissement de la carte mobile, un **reflow multi-colonnes** au-delà d'un certain
+seuil (grille de KPI à 4 colonnes, liste des parcours en grille, etc.). Ce choix est plus gros que
+l'élargissement simple envisagé initialement pour `EcranMobile` : il touche la mise en page propre à
+chaque écran, pas seulement son conteneur, donc une itération par écran (ou groupe d'écrans) plutôt
+qu'un seul passage mécanique.
+
+**Non codée maintenant** : le développeur signale moins de 10 minutes restantes au moment de la
+demande — pas assez pour une itération complète (codage + publication + tour de test), a fortiori pour
+un reflow qui dépasserait de toute façon la règle « un seul écran nouveau, ou deux écrans modifiés ».
+Conformément à la règle de fin de build, le temps restant est consacré à stabiliser ce qui est déjà en
+ligne (itération 8) plutôt qu'à démarrer ce chantier.
+
+Reporté en tête de « À venir », avant Gold/Platine et le sélecteur de persona complet — ⚠️ priorité à
+confirmer avec les cadreurs à la prochaine session de build. Quand elle sera reprise, à découper ainsi :
+une itération pour le gabarit partagé (`EcranMobile`, affecte l'écran principal + tableau de bord, déjà
+migrés en itération 7), puis une itération par paire de fiches donateur (comme pour le passage au
+gabarit responsive lui-même), chacune avec ses propres critères d'acceptation vérifiables à un seuil de
+largeur donné (ex. 1024px).
+
 ## À venir (objectifs ordonnés, détaillés au fil de l'eau)
 
-1. Fiches donateur Gold et Platine (Parcours 2, 3) : complètent la vue d'ensemble, même gabarit que Silver.
-2. Sélecteur de persona complet avec droits différenciés par rôle, si le sélecteur léger de l'itération 1 est jugé insuffisant.
+1. Responsivité desktop (reflow multi-colonnes) : voir section ci-dessus — à détailler en itérations au prochain build.
+2. Fiches donateur Gold et Platine (Parcours 2, 3) : complètent la vue d'ensemble, même gabarit que Silver.
+3. Sélecteur de persona complet avec droits différenciés par rôle, si le sélecteur léger de l'itération 1 est jugé insuffisant.
