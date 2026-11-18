@@ -9,4 +9,8 @@ describe("plafondsDistincts", () => {
   it("n'y a pas de différence entre un profil et lui-même", () => {
     expect(plafondsDistincts("reactivation5", "reactivation5")).toBe(false);
   });
+
+  it("distingue le plafond Inactifs (5/an) de celui d'À réengager (6/an)", () => {
+    expect(plafondsDistincts("reactivation6", "reactivation5")).toBe(true);
+  });
 });

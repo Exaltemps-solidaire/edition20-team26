@@ -33,4 +33,11 @@ test("Démo : le cas passant", async ({ page }) => {
     await expect(page.getByText("Nathalie Dupont")).toBeVisible();
     await expect(page.getByText("distinct de Fidèles")).toBeVisible();
   });
+
+  await test.step("Je reviens, puis j'ouvre la fiche Inactifs : pression minimale automatique", async () => {
+    await page.getByText("← Retour aux parcours").click();
+    await page.getByText("Parcours 6 · Inactifs").click();
+    await expect(page.getByText("Jean-Paul Mercier")).toBeVisible();
+    await expect(page.getByText("Pression minimale automatique")).toBeVisible();
+  });
 });

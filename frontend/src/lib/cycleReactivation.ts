@@ -49,3 +49,26 @@ export const CYCLE_P5: EnvoiReactivation[] = [
     type: "appel",
   },
 ];
+
+export const DONATEUR_P6 = {
+  nom: "Jean-Paul Mercier",
+  porteEntree: "📅 Dernier don : mars 2023 · 3 ans et demi d'inactivité",
+  recence: "42 m",
+  frequence: "2 dons",
+  montant: "30 €",
+};
+
+export const CYCLE_P6: EnvoiReactivation[] = [
+  {
+    date: "Sept. 2026 · Septembre en or",
+    titre: "Newsletter Septembre en or",
+    description: "Sensibilisation nationale · pas d'appel à don dans cet email pour les inactifs longs.",
+    type: "envoye",
+  },
+  {
+    date: "Déc. 2026 · CFA",
+    titre: "1 appel à don · Campagne de fin d'année",
+    description: "1 seul envoi pendant la CFA pour les inactifs (vs 9 pour d'autres) — plafond de pression automatique.",
+    type: "appel",
+  },
+];

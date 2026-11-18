@@ -146,6 +146,8 @@ Capacité estimée : 4 + 4 + 9 = 17 minutes de codage, plus publication (rapide 
 
 ## Itération 5 : La fiche donateur Inactifs confirme une pression minimale automatique
 
+**Plan validé tel quel.** Début de l'itération 5 : 10-15 minutes restantes annoncées (2026-11-18).
+
 - **Dans le périmètre** : depuis une carte « Parcours 6 · Inactifs » de l'écran principal, ouvrir une fiche reproduisant `screen-1-detail-p6` : donateur Jean-Paul Mercier (3 ans et demi d'inactivité), badge « Cycle Réactivation · Parcours 6 », encart « Pression minimale automatique », note « Maximum 5 envois sur 12 mois · 1 appel à don annuel », timeline (newsletter + 1 appel plafonné pendant la campagne de fin d'année + anniversaire auto).
 - **Hors périmètre** : le tableau de bord, les fiches Gold/Platine, la suppression de base à 5 ans d'inactivité (explicitement hors périmètre de la passation).
 - **Critères d'acceptation** (3 au plus) :
@@ -157,7 +159,17 @@ Capacité estimée : 4 + 4 + 9 = 17 minutes de codage, plus publication (rapide 
 - **Fichiers prévus** : `frontend/src/app/fiche/6/page.tsx` (+ css), `frontend/src/app/page.tsx` (lien), extension de `cycleReactivation.ts` si besoin — 3 à 4 fichiers hors tests
 - **Tests unitaires prévus** : 1, sur le plafond de Parcours 6 (ex. « 1 seul appel à don autorisé pendant la CFA pour les inactifs »)
 - **Étapes ajoutées à la démo** : retour à l'écran principal, clic sur Parcours 6, vérifier la pression minimale
-- **Bilan** : _à remplir en fin d'itération_
+- **Bilan** :
+  - Durée de codage réelle : 1 minute, pas de dépassement.
+  - Les 3 critères d'acceptation sont satisfaits tels quels.
+  - Harnais : contrat de déployabilité sans borne, `npm test` passant (11 tests). Pas de revue `reviewer`, par souci de temps (comme à l'itération 4). Aucun blocage sur le signal PM Lab.
+  - Déploiement : frontend reconstruit/republié/redéployé, plateforme déjà en place. `/health` et `/sante` toujours 200 sur 8080.
+  - Reporté : la revue de code par le sous-agent `reviewer` (itérations 4 et 5), à faire relire ensemble si le temps le permet.
+  - **Modifications** (fichier par fichier) :
+    - `frontend/src/lib/cycleReactivation.ts`, `cycleReactivation.test.ts` (modifiés) : ajout des données du cycle Inactifs (Jean-Paul Mercier, 2 envois) et d'un test sur `plafondsDistincts("reactivation6", "reactivation5")` — sert les critères 1 et 2.
+    - `frontend/src/app/fiche/6/page.tsx`, `page.module.css` (nouveaux) : fiche donateur Inactifs (en-tête gris, plafond conditionnel, timeline) — sert les critères 1 et 2.
+    - `frontend/src/app/page.tsx` (modifié) : la carte Parcours 6 devient un lien vers `/fiche/6` — sert le critère 1.
+    - `e2e/demo.spec.ts` (modifié) : étape de démo sur le retour puis l'ouverture de la fiche Inactifs.
 
 ## Itération 6 : Le tableau de bord coordination détecte un envoi en doublon entre équipes
 

@@ -3,8 +3,8 @@ import styles from "./page.module.css";
 import RoleSwitcher from "@/components/RoleSwitcher";
 import { PARCOURS, assignerParcours, type Cycle } from "@/lib/parcours";
 
-// Seuls les Parcours 1 Silver, 4 Fidèles et 5 À réengager ont une fiche donateur pour l'instant.
-const FICHES: Record<number, string> = { 1: "/fiche/1", 4: "/fiche/4", 5: "/fiche/5" };
+// Parcours ayant une fiche donateur.
+const FICHES: Record<number, string> = { 1: "/fiche/1", 4: "/fiche/4", 5: "/fiche/5", 6: "/fiche/6" };
 
 const BADGE_CLASSE: Record<Cycle, string> = {
   accueil: styles.badgeAccueil,
