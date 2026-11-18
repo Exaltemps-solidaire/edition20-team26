@@ -64,6 +64,10 @@ export default function Home() {
             );
           })}
         </div>
+
+        <Link href="/tableau-de-bord" className={styles.btnPrimary}>
+          Voir le tableau de bord coordination →
+        </Link>
       </section>
     </div>
   );

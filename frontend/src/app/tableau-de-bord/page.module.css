@@ -1,0 +1,145 @@
+.page {
+  display: flex;
+  justify-content: center;
+  background: #c8dce8;
+  min-height: 100%;
+  flex: 1;
+  font-family: var(--font-geist-sans), Arial, sans-serif;
+}
+
+.screen {
+  width: 100%;
+  max-width: 480px;
+  background: var(--i4m-blanc);
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background: var(--i4m-bleu);
+  padding: 18px 20px 14px;
+}
+
+.headerTitle {
+  color: var(--i4m-blanc);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.headerSub {
+  color: var(--i4m-bleu-tres-clair);
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.alerte {
+  margin: 16px 20px 12px;
+  background: #fff0f7;
+  border-left: 4px solid var(--i4m-rose-fonce);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+.alerteTitle {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--i4m-rose-fonce);
+  margin-bottom: 4px;
+}
+
+.alerteText {
+  font-size: 11px;
+  color: var(--i4m-texte);
+  line-height: 1.4;
+}
+
+.sectionLabel {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--i4m-bleu);
+  padding: 18px 20px 6px;
+}
+
+.legend {
+  display: flex;
+  gap: 14px;
+  padding: 0 20px 10px;
+  flex-wrap: wrap;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  color: var(--i4m-texte);
+  font-weight: 500;
+}
+
+.legendDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.dotCollecte {
+  background: var(--i4m-bleu);
+}
+
+.dotCommunication {
+  background: var(--i4m-rose);
+}
+
+.dotEvenements {
+  background: #c9960a;
+}
+
+.envoiRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--i4m-bleu-tres-clair);
+}
+
+.envoiRowConflit {
+  background: #fff8e0;
+}
+
+.envoiLabel {
+  flex: 1;
+  font-size: 12px;
+  color: var(--i4m-texte);
+  font-weight: 500;
+}
+
+.envoiDate {
+  font-size: 11px;
+  color: var(--i4m-bleu-clair);
+}
+
+.envoiConflit {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--i4m-rose-fonce);
+  background: #fff0f7;
+  padding: 2px 7px;
+  border-radius: 20px;
+}
+
+.btnPrimary {
+  display: block;
+  width: calc(100% - 40px);
+  margin: 16px 20px;
+  padding: 14px 20px;
+  background: var(--i4m-rose-fonce);
+  color: var(--i4m-blanc);
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  text-align: center;
+  text-decoration: none;
+}

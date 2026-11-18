@@ -173,6 +173,8 @@ Capacité estimée : 4 + 4 + 9 = 17 minutes de codage, plus publication (rapide 
 
 ## Itération 6 : Le tableau de bord coordination détecte un envoi en doublon entre équipes
 
+**Plan validé tel quel.** Début de l'itération 6 : plus de 25 minutes restantes annoncées (2026-11-18).
+
 - **Dans le périmètre** : nouvel écran « Tableau de bord · Coordination », accessible depuis un bouton de l'écran principal, reproduisant `screen-1-dashboard` : bannière d'alerte (« 3 donateurs du cycle Accueil ciblés par un envoi Collecte ET Communication »), liste des envois prévus de la semaine avec leur source (Collecte/Communication/Événements) et le marqueur « ⚠️ Doublon » sur l'envoi en conflit.
 - **Hors périmètre** : les KPI (taux d'ouverture, de clic, etc. — décoratifs, à ajouter seulement si le temps le permet, données en dur), la modification réelle du planning d'envoi.
 - **Critères d'acceptation** (3 au plus) :
@@ -184,7 +186,17 @@ Capacité estimée : 4 + 4 + 9 = 17 minutes de codage, plus publication (rapide 
 - **Fichiers prévus** : `frontend/src/lib/coordination.ts` (+ test), `frontend/src/app/tableau-de-bord/page.tsx` (+ css), `frontend/src/app/page.tsx` (lien) — 5 fichiers hors tests
 - **Tests unitaires prévus** : 2, sur la détection de doublon (un cas en conflit, un cas sans conflit)
 - **Étapes ajoutées à la démo** : ouvrir le tableau de bord, vérifier la bannière d'alerte et le marqueur doublon
-- **Bilan** : _à remplir en fin d'itération_
+- **Bilan** :
+  - Durée de codage réelle : 2 minutes, pas de dépassement (large marge sur les 9 minutes estimées).
+  - Les 3 critères d'acceptation sont satisfaits tels quels.
+  - Harnais : contrat de déployabilité sans borne, `npm test` passant (16 tests). Revue du sous-agent `reviewer` : 2 corrections — (1) `detecterDoublons` ne regroupait que par `cible`, sans tenir compte de la semaine malgré la règle annoncée (« même semaine ») : corrigé en ajoutant un champ `semaine` et en regroupant par `(cible, semaine)`, avec un test dédié prouvant qu'un même cible sur deux semaines différentes n'est plus signalée ; (2) le texte d'alerte était figé en dur (« Parcours 1 Accueil », « Événements ET Communication ») alors qu'il s'affichait dès qu'un doublon existait, sans refléter les données réelles : corrigé avec `detailsConflits`, qui construit le message à partir des cibles et sources effectivement en conflit. Aucun blocage sur le signal PM Lab.
+  - Déploiement : frontend reconstruit/republié/redéployé deux fois (avant puis après la correction), plateforme déjà en place. `/health` et `/sante` toujours 200 sur 8080.
+  - Reporté : les KPI décoratifs (taux d'ouverture, de clic, etc.) de l'écran du prototype, explicitement hors périmètre dans le plan. La revue de code des itérations 4 et 5 reste à faire si le temps le permet.
+  - **Modifications** (fichier par fichier) :
+    - `frontend/src/lib/coordination.ts`, `coordination.test.ts` (nouveaux) : données des 5 envois de la semaine, `detecterDoublons` (regroupe par cible + semaine) et `detailsConflits` (message dynamique), testées (4 cas dont un sur la séparation par semaine) — sert les critères 2 et 1.
+    - `frontend/src/app/tableau-de-bord/page.tsx`, `page.module.css` (nouveaux) : écran tableau de bord (bannière d'alerte dynamique, légende des sources, liste des envois avec marqueur de doublon) — sert les critères 1 et 2.
+    - `frontend/src/app/page.tsx`, `page.module.css` (modifiés) : bouton « Voir le tableau de bord coordination → » ajouté en bas de l'écran principal — sert le critère 1.
+    - `e2e/demo.spec.ts` (modifié) : étape de démo sur l'ouverture du tableau de bord et la vérification des 2 marqueurs de doublon.
 
 ## À venir (objectifs ordonnés, détaillés au fil de l'eau)
 

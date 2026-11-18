@@ -40,4 +40,11 @@ test("Démo : le cas passant", async ({ page }) => {
     await expect(page.getByText("Jean-Paul Mercier")).toBeVisible();
     await expect(page.getByText("Pression minimale automatique")).toBeVisible();
   });
+
+  await test.step("Je reviens, puis j'ouvre le tableau de bord : un envoi en doublon est détecté", async () => {
+    await page.getByText("← Retour aux parcours").click();
+    await page.getByText("Voir le tableau de bord coordination →").click();
+    await expect(page.getByText("⚠️ Conflit détecté cette semaine")).toBeVisible();
+    await expect(page.getByText("⚠️ Doublon")).toHaveCount(2);
+  });
 });

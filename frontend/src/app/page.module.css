@@ -122,3 +122,18 @@
   padding: 2px 7px;
   border-radius: 20px;
 }
+
+.btnPrimary {
+  display: block;
+  width: calc(100% - 40px);
+  margin: 8px 20px 16px;
+  padding: 14px 20px;
+  background: var(--i4m-rose-fonce);
+  color: var(--i4m-blanc);
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  text-align: center;
+  text-decoration: none;
+}
