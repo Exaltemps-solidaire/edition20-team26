@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styles from "./page.module.css";
+import EcranMobile from "@/components/EcranMobile";
 import RoleSwitcher from "@/components/RoleSwitcher";
 import { PARCOURS, assignerParcours, type Cycle } from "@/lib/parcours";
 
@@ -23,52 +24,50 @@ export default function Home() {
   const nouveauDonateurParcours = assignerParcours("irregulier", 0, 10);
 
   return (
-    <div className={styles.page}>
-      <section className={styles.screen}>
-        <div className={styles.header}>
-          <div className={styles.headerTitle}>CRM · Imagine for Margo</div>
-          <div className={styles.headerSub}>Cycles relationnels différenciés</div>
-        </div>
+    <EcranMobile>
+      <div className={styles.header}>
+        <div className={styles.headerTitle}>CRM · Imagine for Margo</div>
+        <div className={styles.headerSub}>Cycles relationnels différenciés</div>
+      </div>
 
-        <RoleSwitcher />
+      <RoleSwitcher />
 
-        <div className={styles.sectionLabel}>🛤️ Les 6 parcours (cycles différenciés)</div>
-        <div className={styles.parcoursList}>
-          {PARCOURS.map((parcours) => {
-            const estAssigne = parcours.id === nouveauDonateurParcours;
-            const contenu = (
-              <>
-                <div className={styles.parcoursNum}>{parcours.id}</div>
-                <div>
-                  <div className={styles.parcoursLabel}>{parcours.label}</div>
-                  <div className={styles.parcoursSeuil}>{parcours.seuil}</div>
-                  <span className={`${styles.badge} ${BADGE_CLASSE[parcours.cycle]}`}>
-                    {BADGE_LABEL[parcours.cycle]}
-                  </span>
-                </div>
-                {estAssigne && (
-                  <span className={styles.affecteTag}>✓ Nouveau donateur affecté</span>
-                )}
-              </>
-            );
-            const classeItem = `${styles.parcoursItem} ${estAssigne ? styles.assigne : ""}`;
-            const fiche = FICHES[parcours.id];
-            return fiche ? (
-              <Link key={parcours.id} href={fiche} className={classeItem}>
-                {contenu}
-              </Link>
-            ) : (
-              <div key={parcours.id} className={classeItem}>
-                {contenu}
+      <div className={styles.sectionLabel}>🛤️ Les 6 parcours (cycles différenciés)</div>
+      <div className={styles.parcoursList}>
+        {PARCOURS.map((parcours) => {
+          const estAssigne = parcours.id === nouveauDonateurParcours;
+          const contenu = (
+            <>
+              <div className={styles.parcoursNum}>{parcours.id}</div>
+              <div>
+                <div className={styles.parcoursLabel}>{parcours.label}</div>
+                <div className={styles.parcoursSeuil}>{parcours.seuil}</div>
+                <span className={`${styles.badge} ${BADGE_CLASSE[parcours.cycle]}`}>
+                  {BADGE_LABEL[parcours.cycle]}
+                </span>
               </div>
-            );
-          })}
-        </div>
+              {estAssigne && (
+                <span className={styles.affecteTag}>✓ Nouveau donateur affecté</span>
+              )}
+            </>
+          );
+          const classeItem = `${styles.parcoursItem} ${estAssigne ? styles.assigne : ""}`;
+          const fiche = FICHES[parcours.id];
+          return fiche ? (
+            <Link key={parcours.id} href={fiche} className={classeItem}>
+              {contenu}
+            </Link>
+          ) : (
+            <div key={parcours.id} className={classeItem}>
+              {contenu}
+            </div>
+          );
+        })}
+      </div>
 
-        <Link href="/tableau-de-bord" className={styles.btnPrimary}>
-          Voir le tableau de bord coordination →
-        </Link>
-      </section>
-    </div>
+      <Link href="/tableau-de-bord" className={styles.btnPrimary}>
+        Voir le tableau de bord coordination →
+      </Link>
+    </EcranMobile>
   );
 }

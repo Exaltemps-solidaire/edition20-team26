@@ -216,6 +216,8 @@ se fait par redimensionnement du navigateur (ou un contrôle Playwright ponctuel
 
 ## Itération 7 : Le gabarit d'écran devient responsive, validé sur l'écran principal et le tableau de bord
 
+**Début de l'itération 7** : 10-25 minutes restantes annoncées (2026-11-18). Codage estimé (6 min) et publication tiennent dans ce budget ; le tour de test complet (10 min) est possible mais sans grande marge — à confirmer avec les cadreurs si l'itération 8/9 doivent suivre dans la même session.
+
 - **Dans le périmètre** : extraire le CSS dupliqué `.page`/`.screen` dans un composant partagé
   (`frontend/src/components/EcranMobile.tsx` + son CSS module), avec les ajustements responsives
   (hauteur de viewport mobile fiable `100dvh`, pas de débordement horizontal sous 360px, centrage
@@ -235,7 +237,17 @@ se fait par redimensionnement du navigateur (ou un contrôle Playwright ponctuel
 - **Fichiers prévus** : `frontend/src/components/EcranMobile.tsx` (+ css), `frontend/src/app/page.tsx` (+ css), `frontend/src/app/tableau-de-bord/page.tsx` (+ css) — 6 fichiers, aucun test (voir note ci-dessus)
 - **Tests unitaires prévus** : aucun (pas de logique métier ajoutée)
 - **Étapes ajoutées à la démo** : aucune (pas de nouveau contenu fonctionnel)
-- **Bilan** : _à remplir en fin d'itération_
+- **Bilan** :
+  - Durée de codage réelle : 2 minutes, pas de dépassement.
+  - Les 3 critères d'acceptation sont satisfaits tels quels : le composant partagé `EcranMobile` reprend à l'identique le CSS `.page`/`.screen` précédemment dupliqué (centrage via `max-width: 480px`, pas de débordement à 360px grâce à `overflow-x: hidden` déjà posé globalement + localement), avec l'ajustement `min-height: 100dvh` (repli `100vh`) demandé pour la fiabilité du viewport mobile. `npm test` (18 tests) et `npm run build` passent sans régression ; la démo Playwright existante n'a pas été rejouée (pas d'étape nouvelle, écrans inchangés visuellement).
+  - Harnais : contrat de déployabilité sans borne, `npm test` passant, revue du sous-agent `reviewer` : rien à signaler (vérification du composant, des classes orphelines, des fermetures JSX et du CSS responsive). Aucun blocage sur le signal PM Lab.
+  - Déploiement : plateforme déjà en place. Frontend reconstruit/republié/redéployé (un `podman compose up -d --force-recreate frontend`, un avertissement bénin « pod already exists » sans effet sur le redémarrage du conteneur). `/health` et `/sante` toujours 200 sur 8080, `/health` 200 sur 8081. HTML vérifié par `curl` : l'écran principal et le tableau de bord utilisent bien les classes `EcranMobile-module__*`.
+  - Signalé à PM Lab : version 7, `moteur_avance: false` (enregistrée quand même).
+  - Reporté : rien côté périmètre de cette itération. Les 4 fiches donateur restent sur leur propre `.page`/`.screen` local, comme prévu pour les itérations 8 et 9.
+  - **Modifications** (fichier par fichier) :
+    - `frontend/src/components/EcranMobile.tsx`, `EcranMobile.module.css` (nouveaux) : composant de gabarit d'écran partagé et responsive (`100dvh`, pas de débordement sous 360px, centrage au-delà de 480px) — sert les 3 critères.
+    - `frontend/src/app/page.tsx`, `page.module.css` (modifiés) : écran principal migré vers `EcranMobile`, CSS `.page`/`.screen` local retiré — sert les critères 1 et 2.
+    - `frontend/src/app/tableau-de-bord/page.tsx`, `page.module.css` (modifiés) : tableau de bord migré vers `EcranMobile`, CSS `.page`/`.screen` local retiré — sert les critères 1 et 2.
 
 ## Itération 8 : Le gabarit responsive est appliqué aux fiches Silver et Fidèles
 

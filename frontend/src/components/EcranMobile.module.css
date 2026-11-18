@@ -1,0 +1,18 @@
+.page {
+  display: flex;
+  justify-content: center;
+  background: #c8dce8;
+  min-height: 100vh;
+  min-height: 100dvh;
+  flex: 1;
+  font-family: var(--font-geist-sans), Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+.screen {
+  width: 100%;
+  max-width: 480px;
+  background: var(--i4m-blanc);
+  display: flex;
+  flex-direction: column;
+}
